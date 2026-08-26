@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدونة - Enzo Team</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* ===== نفس الـ style من الصفحات السابقة ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0A1628;
+            --primary-mid: #152A4A;
+            --primary-light: #1E3D6B;
+            --silver: #C8C8C8;
+            --silver-light: #E8E8E8;
+            --silver-gradient: linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 50%, #A8A8A8 100%);
+            --gold: #D4AF37;
+            --gold-dark: #B8960F;
+            --gold-light: #F0D060;
+            --white: #FFFFFF;
+            --cyan-light: #64FFDA;
+            --text-dark: #0A1628;
+            --text-light: #E8E8E8;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-title: 'Orbitron', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-numbers: 'Rajdhani', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--primary-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--silver-gradient); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+        ::selection { background: var(--gold); color: var(--primary-dark); }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--silver-gradient);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 20px rgba(192, 192, 192, 0.25);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 35px rgba(192, 192, 192, 0.4); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--silver);
+        }
+        .btn-secondary:hover { background: var(--silver); color: var(--primary-dark); transform: translateY(-3px); }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.06);
+            transition: var(--transition);
+        }
+        .header.scrolled { padding: 10px 0; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-title);
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--white);
+        }
+        .logo-icon { font-size: 26px; display: flex; align-items: center; }
+        .logo-icon svg { width: 32px; height: 32px; }
+        .logo-text { color: var(--white); }
+        .logo-highlight { color: var(--gold); }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-list > li > a {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+        .nav-list > li > a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        .nav-list > li > a:hover::after,
+        .nav-list > li > a.active::after { width: 100%; }
+        .nav-list > li > a:hover,
+        .nav-list > li > a.active { opacity: 1; color: var(--gold); }
+
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--primary-mid);
+            padding: 10px 0;
+            border-radius: 12px;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(192, 192, 192, 0.06);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 24px;
+            color: var(--text-light);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .dropdown-menu li a:hover {
+            background: rgba(212, 175, 55, 0.08);
+            color: var(--gold);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .language-switcher {
+            display: flex;
+            gap: 4px;
+            background: rgba(255,255,255,0.04);
+            padding: 4px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 50px;
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .lang-btn.active {
+            background: var(--silver-gradient);
+            color: var(--primary-dark);
+        }
+        .lang-btn:hover:not(.active) { background: rgba(255,255,255,0.06); }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--cyan-light);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .security-badge i { font-size: 14px; }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero {
+            padding: 140px 0 60px;
+            background: linear-gradient(180deg, rgba(21, 42, 74, 0.3) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.04);
+        }
+        .page-hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .page-hero-content h1 {
+            font-family: var(--font-title);
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+        .page-hero-content h1 .highlight {
+            background: var(--silver-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-hero-content p {
+            font-size: 17px;
+            opacity: 0.7;
+            line-height: 1.8;
+            margin-bottom: 24px;
+            max-width: 500px;
+        }
+        .page-hero-icon {
+            font-size: 120px;
+            color: var(--gold);
+            opacity: 0.15;
+            text-align: center;
+        }
+        .page-hero-icon i {
+            background: var(--silver-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== BLOG GRID ===== */
+        .blog-page { padding: 60px 0; }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        .blog-card {
+            background: rgba(21, 42, 74, 0.25);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(192, 192, 192, 0.04);
+            transition: var(--transition);
+        }
+        .blog-card:hover {
+            border-color: rgba(212, 175, 55, 0.15);
+            transform: translateY(-5px);
+        }
+        .blog-card .icon {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .blog-card .tag {
+            display: inline-block;
+            padding: 2px 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .blog-card h3 {
+            font-family: var(--font-title);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .blog-card p {
+            font-size: 14px;
+            opacity: 0.6;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .blog-card .meta {
+            font-size: 12px;
+            opacity: 0.4;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .blog-card .meta i {
+            color: var(--gold);
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-tag {
+            display: inline-block;
+            padding: 4px 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .section-title .highlight {
+            background: var(--silver-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-desc {
+            font-size: 15px;
+            opacity: 0.6;
+            max-width: 600px;
+            margin: 10px auto 0;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(21, 42, 74, 0.2));
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            opacity: 0.6;
+            margin-bottom: 24px;
+        }
+        .cta-section .btn-group {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 60px 0 20px;
+            background: rgba(5, 12, 22, 0.95);
+            border-top: 1px solid rgba(192, 192, 192, 0.04);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 14px;
+        }
+        .footer-about {
+            font-size: 13px;
+            opacity: 0.5;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+        .footer-social a {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        .footer-social a:hover {
+            background: var(--gold);
+            color: var(--primary-dark);
+        }
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--silver-light);
+        }
+        .footer-col ul li { margin-bottom: 6px; }
+        .footer-col ul li a {
+            font-size: 13px;
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+        .footer-col ul li a:hover { opacity: 1; color: var(--gold); }
+        .footer-contact li {
+            font-size: 13px;
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .footer-contact li i {
+            color: var(--gold);
+            width: 16px;
+            font-size: 14px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(192, 192, 192, 0.04);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .footer-security {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .footer-security i {
+            color: var(--cyan-light);
+            font-size: 14px;
+        }
+        .footer-security span {
+            font-size: 11px;
+            opacity: 0.4;
+        }
+        .footer-copy {
+            font-size: 12px;
+            opacity: 0.3;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--silver-gradient);
+            border: none;
+            color: var(--primary-dark);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.25);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .page-hero-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .page-hero-content p { margin: 0 auto 24px; }
+            .page-hero-icon { font-size: 80px; }
+            .blog-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--primary-dark);
+                padding: 30px;
+                border-bottom: 1px solid rgba(192, 192, 192, 0.06);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: var(--transition);
+            }
+            .nav.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            .nav-list {
+                flex-direction: column;
+                gap: 14px;
+            }
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                background: rgba(255,255,255,0.03);
+                margin-top: 6px;
+                box-shadow: none;
+            }
+            .menu-toggle { display: flex; }
+            .language-switcher .lang-btn span { display: none; }
+            .security-badge span { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .page-hero-content h1 { font-size: 30px; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-security { justify-content: center; }
+            .section-title { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <span class="logo-icon">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 2L4 8V14C4 20.5 9 27 16 30C23 27 28 20.5 28 14V8L16 2Z" stroke="url(#logoGrad)" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M16 8L10 11V15.5C10 18.5 12.5 22 16 23.5C19.5 22 22 18.5 22 15.5V11L16 8Z" fill="rgba(212,175,55,0.1)" stroke="url(#logoGrad2)" stroke-width="1.5"/>
+                                <circle cx="16" cy="15" r="3" fill="url(#logoGrad2)" opacity="0.4"/>
+                                <defs>
+                                    <linearGradient id="logoGrad" x1="2" y1="2" x2="30" y2="30">
+                                        <stop offset="0%" stop-color="#E8E8E8"/>
+                                        <stop offset="50%" stop-color="#C0C0C0"/>
+                                        <stop offset="100%" stop-color="#A8A8A8"/>
+                                    </linearGradient>
+                                    <linearGradient id="logoGrad2" x1="10" y1="8" x2="22" y2="24">
+                                        <stop offset="0%" stop-color="#D4AF37"/>
+                                        <stop offset="100%" stop-color="#B8960F"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </span>
+                        <span class="logo-text">Enzo<span class="logo-highlight">Team</span></span>
+                    </a>
+                </div>
+                
+                <nav class="nav" id="nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li class="dropdown">
+                            <a href="#">خدماتنا <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="support.html">الدعم التقني</a></li>
+                                <li><a href="programming.html">البرمجة والتطوير</a></li>
+                                <li><a href="hacking.html">الاختراق الأخلاقي</a></li>
+                                <li><a href="cybersecurity.html">الأمن السيبراني</a></li>
+                                <li><a href="secondary.html">الخدمات الثانوية</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="team.html">فريقنا</a></li>
+                        <li><a href="index.html#testimonials">آراء العملاء</a></li>
+                        <li><a href="blog.html" class="active">المدونة</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-right">
+                    <div class="language-switcher">
+                        <button class="lang-btn active" data-lang="ar" onclick="switchLanguage('ar')">🇸🇦 ع</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">🇬🇧 E</button>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>مؤمن</span>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PAGE HERO ===== -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-inner">
+                <div class="page-hero-content">
+                    <span class="section-tag">المدونة</span>
+                    <h1 id="pageTitle">مدونة <span class="highlight">Enzo Team</span></h1>
+                    <p id="pageDesc">مقالات ونصائح في مجال الأمن السيبراني والتقنية. نشارك معكم أحدث المعارف والخبرات.</p>
+                    <a href="#blog" class="btn btn-primary"><i class="fas fa-newspaper"></i> <span id="ctaBtn">اقرأ المقالات</span></a>
+                </div>
+                <div class="page-hero-icon">
+                    <i class="fas fa-blog"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOG GRID ===== -->
+    <section class="blog-page" id="blog">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">آخر المقالات</span>
+                <h2 class="section-title">اقرأ <span class="highlight">أحدث</span> المقالات</h2>
+                <p class="section-desc">نصائح وإرشادات من خبرائنا في مجال الأمن السيبراني</p>
+            </div>
+            
+            <div class="blog-grid">
+                <!-- Article 1 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-shield-halved"></i></div>
+                    <span class="tag">أمن سيبراني</span>
+                    <h3 id="b1Title">كيف تحمي حساباتك من الاختراق</h3>
+                    <p id="b1Desc">نصائح عملية لحماية حساباتك من المخترقين باستخدام كلمات مرور قوية والمصادقة الثنائية.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Lorenzo</span>
+                        <span><i class="fas fa-calendar"></i> 25 أغسطس 2026</span>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-user-secret"></i></div>
+                    <span class="tag">اختراق أخلاقي</span>
+                    <h3 id="b2Title">ما هو الاختراق الأخلاقي؟</h3>
+                    <p id="b2Desc">تعرف على مفهوم الاختراق الأخلاقي وأهميته في حماية المؤسسات من الهجمات الإلكترونية.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Max</span>
+                        <span><i class="fas fa-calendar"></i> 20 أغسطس 2026</span>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-code"></i></div>
+                    <span class="tag">برمجة</span>
+                    <h3 id="b3Title">أفضل ممارسات تطوير المواقع الآمنة</h3>
+                    <p id="b3Desc">دليل شامل لأفضل الممارسات التي يجب اتباعها لتطوير مواقع آمنة ضد الثغرات.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Sofia</span>
+                        <span><i class="fas fa-calendar"></i> 15 أغسطس 2026</span>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-lock"></i></div>
+                    <span class="tag">أمن سيبراني</span>
+                    <h3 id="b4Title">أهمية التشفير في حماية البيانات</h3>
+                    <p id="b4Desc">لماذا التشفير مهم وكيف يمكن استخدامه لحماية بياناتك الحساسة من الاختراق.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Elena</span>
+                        <span><i class="fas fa-calendar"></i> 10 أغسطس 2026</span>
+                    </div>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-network-wired"></i></div>
+                    <span class="tag">شبكات</span>
+                    <h3 id="b5Title">كيف تؤمن شبكتك المنزلية</h3>
+                    <p id="b5Desc">خطوات بسيطة لتأمين شبكة الواي فاي الخاصة بك وحمايتها من المتسللين.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Yassin</span>
+                        <span><i class="fas fa-calendar"></i> 5 أغسطس 2026</span>
+                    </div>
+                </div>
+
+                <!-- Article 6 -->
+                <div class="blog-card">
+                    <div class="icon"><i class="fas fa-database"></i></div>
+                    <span class="tag">قواعد بيانات</span>
+                    <h3 id="b6Title">أمن قواعد البيانات: دليل المبتدئين</h3>
+                    <p id="b6Desc">تعرف على أساسيات تأمين قواعد البيانات وحمايتها من هجمات SQL Injection.</p>
+                    <div class="meta">
+                        <span><i class="fas fa-user"></i> Karim</span>
+                        <span><i class="fas fa-calendar"></i> 1 أغسطس 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 id="ctaTitle">هل لديك سؤال تقني؟</h2>
+            <p id="ctaDesc">فريقنا جاهز للإجابة على جميع استفساراتك. تواصل معنا الآن!</p>
+            <div class="btn-group">
+                <a href="contact.html" class="btn btn-primary"><i class="fas fa-comment"></i> <span id="ctaBtn2">اطرح سؤالك</span></a>
+                <a href="https://www.instagram.com/enzo_team_1" target="_blank" class="btn btn-secondary"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <span class="logo-icon"><i class="fas fa-shield-alt"></i></span>
+                        <span class="logo-text">Enzo<span class="logo-highlight">Team</span></span>
+                    </div>
+                    <p class="footer-about">درعك الرقمي المتكامل. حلول تقنية وأمنية للأفراد والشركات.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/enzo_team_1" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>خدماتنا</h4>
+                    <ul>
+                        <li><a href="support.html">الدعم التقني</a></li>
+                        <li><a href="programming.html">البرمجة والتطوير</a></li>
+                        <li><a href="hacking.html">الاختراق الأخلاقي</a></li>
+                        <li><a href="cybersecurity.html">الأمن السيبراني</a></li>
+                        <li><a href="secondary.html">الخدمات الثانوية</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="team.html">فريقنا</a></li>
+                        <li><a href="blog.html">المدونة</a></li>
+                        <li><a href="contact.html">اتصل بنا</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> contact@enzoteam.com</li>
+                        <li><i class="fas fa-phone"></i> +212 6XX-XXXXXX</li>
+                        <li><i class="fas fa-map-marker-alt"></i> الدار البيضاء</li>
+                        <li><i class="fas fa-clock"></i> دعم 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-security">
+                    <i class="fas fa-shield-halved"></i>
+                    <span>مؤمن بتقنية AES-256</span>
+                    <i class="fas fa-shield-halved"></i>
+                    <span>محمي بأنظمة متقدمة</span>
+                </div>
+                <p class="footer-copy">&copy; 2026 Enzo Team. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const nav = document.getElementById('nav');
+            if (menuToggle && nav) {
+                menuToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    nav.classList.toggle('open');
+                });
+            }
+
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            if (backToTop) {
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+
+        function switchLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) btn.classList.add('active');
+            });
+
+            const en = {
+                pageTitle: 'Enzo Team <span class="highlight">Blog</span>',
+                pageDesc: 'Articles and tips in cybersecurity and technology. We share the latest knowledge and expertise with you.',
+                ctaBtn: 'Read Articles',
+                b1Title: 'How to Protect Your Accounts from Hacking',
+                b1Desc: 'Practical tips to protect your accounts from hackers using strong passwords and two-factor authentication.',
+                b2Title: 'What is Ethical Hacking?',
+                b2Desc: 'Learn about the concept of ethical hacking and its importance in protecting organizations from cyber attacks.',
+                b3Title: 'Best Practices for Secure Web Development',
+                b3Desc: 'A comprehensive guide to best practices for developing secure websites against vulnerabilities.',
+                b4Title: 'The Importance of Encryption in Data Protection',
+                b4Desc: 'Why encryption is important and how it can be used to protect your sensitive data from breaches.',
+                b5Title: 'How to Secure Your Home Network',
+                b5Desc: 'Simple steps to secure your WiFi network and protect it from intruders.',
+                b6Title: 'Database Security: A Beginner\'s Guide',
+                b6Desc: 'Learn the basics of securing databases and protecting them from SQL Injection attacks.',
+                ctaTitle: 'Have a Technical Question?',
+                ctaDesc: 'Our team is ready to answer all your inquiries. Contact us now!',
+                ctaBtn2: 'Ask Your Question'
+            };
+
+            const ar = {
+                pageTitle: 'مدونة <span class="highlight">Enzo Team</span>',
+                pageDesc: 'مقالات ونصائح في مجال الأمن السيبراني والتقنية. نشارك معكم أحدث المعارف والخبرات.',
+                ctaBtn: 'اقرأ المقالات',
+                b1Title: 'كيف تحمي حساباتك من الاختراق',
+                b1Desc: 'نصائح عملية لحماية حساباتك من المخترقين باستخدام كلمات مرور قوية والمصادقة الثنائية.',
+                b2Title: 'ما هو الاختراق الأخلاقي؟',
+                b2Desc: 'تعرف على مفهوم الاختراق الأخلاقي وأهميته في حماية المؤسسات من الهجمات الإلكترونية.',
+                b3Title: 'أفضل ممارسات تطوير المواقع الآمنة',
+                b3Desc: 'دليل شامل لأفضل الممارسات التي يجب اتباعها لتطوير مواقع آمنة ضد الثغرات.',
+                b4Title: 'أهمية التشفير في حماية البيانات',
+                b4Desc: 'لماذا التشفير مهم وكيف يمكن استخدامه لحماية بياناتك الحساسة من الاختراق.',
+                b5Title: 'كيف تؤمن شبكتك المنزلية',
+                b5Desc: 'خطوات بسيطة لتأمين شبكة الواي فاي الخاصة بك وحمايتها من المتسللين.',
+                b6Title: 'أمن قواعد البيانات: دليل المبتدئين',
+                b6Desc: 'تعرف على أساسيات تأمين قواعد البيانات وحمايتها من هجمات SQL Injection.',
+                ctaTitle: 'هل لديك سؤال تقني؟',
+                ctaDesc: 'فريقنا جاهز للإجابة على جميع استفساراتك. تواصل معنا الآن!',
+                ctaBtn2: 'اطرح سؤالك'
+            };
+
+            const t = lang === 'en' ? en : ar;
+
+            document.getElementById('pageTitle').innerHTML = t.pageTitle;
+            document.getElementById('pageDesc').textContent = t.pageDesc;
+            document.getElementById('ctaBtn').textContent = t.ctaBtn;
+            document.getElementById('b1Title').textContent = t.b1Title;
+            document.getElementById('b1Desc').textContent = t.b1Desc;
+            document.getElementById('b2Title').textContent = t.b2Title;
+            document.getElementById('b2Desc').textContent = t.b2Desc;
+            document.getElementById('b3Title').textContent = t.b3Title;
+            document.getElementById('b3Desc').textContent = t.b3Desc;
+            document.getElementById('b4Title').textContent = t.b4Title;
+            document.getElementById('b4Desc').textContent = t.b4Desc;
+            document.getElementById('b5Title').textContent = t.b5Title;
+            document.getElementById('b5Desc').textContent = t.b5Desc;
+            document.getElementById('b6Title').textContent = t.b6Title;
+            document.getElementById('b6Desc').textContent = t.b6Desc;
+            document.getElementById('ctaTitle').textContent = t.ctaTitle;
+            document.getElementById('ctaDesc').textContent = t.ctaDesc;
+            document.getElementById('ctaBtn2').textContent = t.ctaBtn2;
+        }
+    </script>
+</body>
+</html>
